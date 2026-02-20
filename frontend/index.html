@@ -44,6 +44,58 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
+        // Check if page is opened directly (file://) instead of via server
+        if (window.location.protocol === 'file:') {
+            document.getElementById('root').innerHTML = `
+                <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;">
+                    <div style="max-width:600px;background:white;border-radius:12px;padding:40px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                        <div style="text-align:center;margin-bottom:30px;">
+                            <div style="font-size:64px;margin-bottom:10px;">⚠️</div>
+                            <h1 style="font-size:24px;font-weight:bold;color:#dc2626;margin-bottom:10px;">Dashboard Cannot Load</h1>
+                            <p style="color:#666;font-size:14px;">You opened the HTML file directly. Please use the backend server instead.</p>
+                        </div>
+
+                        <div style="background:#fef2f2;border:2px solid #fecaca;border-radius:8px;padding:20px;margin-bottom:20px;">
+                            <h3 style="font-weight:600;margin-bottom:10px;color:#991b1b;">✋ Why doesn't it work?</h3>
+                            <p style="color:#666;font-size:14px;line-height:1.6;">
+                                The dashboard needs to communicate with the backend API. When you open the HTML file directly,
+                                the browser blocks API requests for security reasons (CORS policy).
+                            </p>
+                        </div>
+
+                        <div style="background:#ecfdf5;border:2px solid #a7f3d0;border-radius:8px;padding:20px;">
+                            <h3 style="font-weight:600;margin-bottom:15px;color:#065f46;">✅ How to fix:</h3>
+                            <ol style="color:#666;font-size:14px;line-height:2;padding-left:20px;">
+                                <li><strong>Step 1:</strong> Open terminal/command prompt</li>
+                                <li><strong>Step 2:</strong> Navigate to backend folder:
+                                    <div style="background:#1f2937;color:#10b981;padding:10px;border-radius:6px;margin-top:8px;font-family:monospace;font-size:13px;">
+                                        cd backend
+                                    </div>
+                                </li>
+                                <li><strong>Step 3:</strong> Run the backend server:
+                                    <div style="background:#1f2937;color:#10b981;padding:10px;border-radius:6px;margin-top:8px;font-family:monospace;font-size:13px;">
+                                        python main.py
+                                    </div>
+                                </li>
+                                <li><strong>Step 4:</strong> The dashboard will open automatically in your browser at:
+                                    <div style="background:#1f2937;color:#10b981;padding:10px;border-radius:6px;margin-top:8px;font-family:monospace;font-size:13px;">
+                                        http://localhost:8000
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #e5e7eb;">
+                            <p style="color:#666;font-size:13px;">
+                                📚 Need help? Check the README.md file for detailed instructions
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            throw new Error('Page opened directly - backend server required');
+        }
+
         const API_BASE = '/api/v1';
 
         // ===== RISK SCORE GAUGE =====
